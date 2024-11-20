@@ -20,34 +20,39 @@ const Content = (props) => {
 
 const Total = (props) => {
   return (
-    <p>Number of exercises {props.total}</p>
+    <p>Number of exercises {props.parts.reduce((acc, part) => acc + part.exercises, 0)}</p>
   )
 }
 
 class CoursePart {
-  part;
-  exercises;
-
   constructor(part, exercises) {
     this.part = part;
     this.exercises = exercises;
   }
 }
 
+class Course {
+  constructor(name, parts) {
+    this.name = name;
+    this.parts = parts;
+  }
+}
+
 const App = () => {
-  const course = 'Half Stack application development';
-  const parts = [
-    new CoursePart('Fundamentals of React', 10),
-    new CoursePart('Using props to pass data', 7),
-    new CoursePart('State of a component', 14)
-  ];
-  const total = parts.reduce((acc, part) => acc + part.exercises, 0);
+  const course = new Course(
+    'Half Stack application development', 
+    [
+      new CoursePart('Fundamentals of React', 10),
+      new CoursePart('Using props to pass data', 7),
+      new CoursePart('State of a component', 14)
+    ]
+  );
 
   return (
     <div>
-      <Header course={course} />
-      <Content parts={parts} />
-      <Total total={total} />
+      <Header course={course.name} />
+      <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </div>
   )
 }
