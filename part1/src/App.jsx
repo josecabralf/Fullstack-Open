@@ -1,33 +1,54 @@
-const Hello = (props) => {
-  console.log(props)
+const Header = (props) => {
+  return (
+    <h1>{props.course}</h1>
+  )
+}
+
+const Part = (props) => {
+  return (
+    <p>{props.part} {props.exercises}</p>
+  )
+}
+
+const Content = (props) => {
   return (
     <div>
-      <p>
-        Hello {props.name}, you are {props.age} years old
-      </p>
+      {props.parts.map(part => <Part key={part.part} part={part.part} exercises={part.exercises} />)}
     </div>
   )
 }
 
-const Footer = () => {
+const Total = (props) => {
   return (
-    <div>
-      greeting app created by <a href='https://github.com/josecabralf'>josecabralf</a>
-    </div>
+    <p>Number of exercises {props.total}</p>
   )
+}
+
+class CoursePart {
+  part;
+  exercises;
+
+  constructor(part, exercises) {
+    this.part = part;
+    this.exercises = exercises;
+  }
 }
 
 const App = () => {
-  const name = 'Peter'
-  const age = 10
+  const course = 'Half Stack application development';
+  const parts = [
+    new CoursePart('Fundamentals of React', 10),
+    new CoursePart('Using props to pass data', 7),
+    new CoursePart('State of a component', 14)
+  ];
+  const total = parts.reduce((acc, part) => acc + part.exercises, 0);
 
   return (
-    <>
-      <h1>Greetings</h1>
-      <Hello name='Maya' age={26 + 10} />
-      <Hello name={name} age={age} />
-      <Footer />
-    </>
+    <div>
+      <Header course={course} />
+      <Content parts={parts} />
+      <Total total={total} />
+    </div>
   )
 }
 
