@@ -4,20 +4,19 @@ const Header = ({ text }) => <h2>{text}</h2>
 
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
 
-const Statistic = ({ text, value }) => <div>{text} {value}</div>
+const StatisticLine = ({ text, value }) => <div>{text} {value}</div>
 
 const Statistics = ({ good, neutral, bad }) => 
     <div id="statistics">
-      <Header text="statistics" />
       <div id='basic-statistics'>
-        <Statistic text="good" value={good} />
-        <Statistic text="neutral" value={neutral} />
-        <Statistic text="bad" value={bad} />
+        <StatisticLine text="good" value={good} />
+        <StatisticLine text="neutral" value={neutral} />
+        <StatisticLine text="bad" value={bad} />
       </div>
       <div id='complex-statistics'>
-        <Statistic text="all" value={good + neutral + bad} />
-        <Statistic text="average" value={ (good - bad) / (good + neutral + bad) } />
-        <Statistic text="positive" value={`${ good / (good + neutral + bad) * 100 }%`} />
+        <StatisticLine text="all" value={good + neutral + bad} />
+        <StatisticLine text="average" value={ (good - bad) / (good + neutral + bad) } />
+        <StatisticLine text="positive" value={`${ good / (good + neutral + bad) * 100 }%`} />
       </div>
     </div>
 
@@ -35,36 +34,21 @@ const App = () => {
       return () => setBad(bad + 1)
   }
 
-  if (!good && !neutral && !bad)
-    return (
-      <div>
-        <div id="feedback">
-          <Header text="give feedback" />
-          <div>
-            <Button onClick={handleClick('good')} text="good" />
-            <Button onClick={handleClick('neutral')} text="neutral" />
-            <Button onClick={handleClick('bad')} text="bad" />
-          </div>
-        </div>
-        <div id="statistics">
-          <Header text="statistics" />
-          <div>No feedback given</div>
-        </div>
-      </div>
-    );
+  const statistics = !good && !neutral && !bad
+    ? <div>No feedback given</div>
+    : (<Statistics good={good} neutral={neutral} bad={bad} />)
 
   return (
     <div>
+      <Header text="give feedback" />
       <div id="feedback">
-        <Header text="give feedback" />
-        <div>
           <Button onClick={handleClick('good')} text="good" />
           <Button onClick={handleClick('neutral')} text="neutral" />
           <Button onClick={handleClick('bad')} text="bad" />
-        </div>
       </div>
 
-      <Statistics good={good} neutral={neutral} bad={bad} />
+      <Header text="statistics" />
+      {statistics}
     </div>
   )
 }
