@@ -16,8 +16,8 @@ const Statistics = ({ good, neutral, bad }) =>
       </div>
       <div id='complex-statistics'>
         <Statistic text="all" value={good + neutral + bad} />
-        <Statistic text="average" value={(good - bad)/(good + neutral + bad) || '0'} />
-        <Statistic text="positive" value={`${good/(good + neutral + bad) * 100 || '0'}%`} />
+        <Statistic text="average" value={ (good - bad) / (good + neutral + bad) } />
+        <Statistic text="positive" value={`${ good / (good + neutral + bad) * 100 }%`} />
       </div>
     </div>
 
@@ -34,6 +34,24 @@ const App = () => {
     if (type === 'bad')
       return () => setBad(bad + 1)
   }
+
+  if (!good && !neutral && !bad)
+    return (
+      <div>
+        <div id="feedback">
+          <Header text="give feedback" />
+          <div>
+            <Button onClick={handleClick('good')} text="good" />
+            <Button onClick={handleClick('neutral')} text="neutral" />
+            <Button onClick={handleClick('bad')} text="bad" />
+          </div>
+        </div>
+        <div id="statistics">
+          <Header text="statistics" />
+          <div>No feedback given</div>
+        </div>
+      </div>
+    );
 
   return (
     <div>
