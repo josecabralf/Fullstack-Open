@@ -4,21 +4,23 @@ const Header = ({ text }) => <h2>{text}</h2>
 
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
 
-const StatisticLine = ({ text, value }) => <div>{text} {value}</div>
+const StatisticLine = ({ text, value }) => 
+  <tr>
+    <td>{text}</td>
+    <td>{value}</td>
+  </tr>
 
 const Statistics = ({ good, neutral, bad }) => 
-    <div id="statistics">
-      <div id='basic-statistics'>
+    <table id="statistics">
+      <tbody>
         <StatisticLine text="good" value={good} />
         <StatisticLine text="neutral" value={neutral} />
         <StatisticLine text="bad" value={bad} />
-      </div>
-      <div id='complex-statistics'>
         <StatisticLine text="all" value={good + neutral + bad} />
         <StatisticLine text="average" value={ (good - bad) / (good + neutral + bad) } />
         <StatisticLine text="positive" value={`${ good / (good + neutral + bad) * 100 }%`} />
-      </div>
-    </div>
+      </tbody>
+    </table>
 
 const App = () => {
   const [good, setGood] = useState(0)
