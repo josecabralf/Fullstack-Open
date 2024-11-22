@@ -1,20 +1,5 @@
-class CourseModel {
-  constructor(name, parts) {
-    this.name = name;
-    this.parts = parts;
-  }
+import {CourseModel, CoursePartModel} from './models/Course';
 
-  total() {
-    return this.parts.reduce((acc, part) => acc + part.exercises, 0);
-  }
-}
-
-class CoursePartModel {
-  constructor(name, exercises) {
-    this.name = name;
-    this.exercises = exercises;
-  }
-}
 
 const Header = ({name}) => <h1>{name}</h1>;
 
@@ -38,7 +23,7 @@ const Content = ({ parts }) => {
 
 const Total = ({total}) => <p><b>Number of exercises: {total}</b></p>;
 
-const CoursePage = ({course}) => 
+const Course = ({course}) => 
     <div>
       <Header name={course.name} />
       <Content parts={course.parts} />
@@ -47,18 +32,15 @@ const CoursePage = ({course}) =>
 
 
 const App = () => {
-  const course = new CourseModel(
-    'Half Stack application development', 
-    [
-      new CoursePartModel('Fundamentals of React', 10),
-      new CoursePartModel('Using props to pass data', 7),
-      new CoursePartModel('State of a component', 14)
-    ]
-  );
+  const course = new CourseModel('Half Stack application development');
+
+  course.addPart(new CoursePartModel(1, 'Fundamentals of React', 10));
+  course.addPart(new CoursePartModel(2, 'Using props to pass data', 7));
+  course.addPart(new CoursePartModel(3, 'State of a component', 14));
 
   return (
     <div>
-      <CoursePage course={course} />
+      <Course course={course} />
     </div>
   );
 }
