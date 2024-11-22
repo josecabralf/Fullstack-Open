@@ -21,7 +21,7 @@ const Content = ({ parts }) => {
   )
 }
 
-const Total = ({total}) => <p><b>Number of exercises: {total}</b></p>;
+const Total = ({total}) => <p><b>total of {total} exercises</b></p>;
 
 const Course = ({course}) => 
     <div>
@@ -37,6 +37,7 @@ const App = () => {
   course.addPart(new CoursePartModel(1, 'Fundamentals of React', 10));
   course.addPart(new CoursePartModel(2, 'Using props to pass data', 7));
   course.addPart(new CoursePartModel(3, 'State of a component', 14));
+  course.addPart(new CoursePartModel(3, 'Redux', 11));
 
   return (
     <div>
