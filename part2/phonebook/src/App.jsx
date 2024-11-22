@@ -3,18 +3,20 @@ import { PersonModel } from './models/PersonModels'
 import { Numbers } from './components/Numbers'
 import { Header } from './components/utils'
 
+
 const App = () => {
   const [persons, setPersons] = useState([new PersonModel(1, 'Arto Hellas')]) 
   const [newName, setNewName] = useState('')
 
   const onNameChange = (event) => setNewName(event.target.value);
 
+  const personExists = (persons, name) => persons.find(person => person.name === name);
+
   const onSubmit = (event) => {
     event.preventDefault();
     setNewName(''); // Clear the input field
 
-    const personExists = persons.find(person => person.name === newName);
-    if (personExists) {
+    if (personExists(persons, newName)) {
       alert(`${newName} is already added to phonebook`);
       return;
     }
