@@ -1,6 +1,12 @@
 import { Header } from "./utils";
 
-const NumbersList = ({ persons }) => <div>{persons.map(person => <div key={person.name}>{person.name}</div>)}</div> 
+const NumbersList = ({ persons }) => 
+  <div>{
+    persons.map(person => 
+      <div key={person.id}>
+        {person.toString()}
+      </div>)}
+  </div> 
 
 const NoNumbers = () => <div>No numbers to show</div>
 
