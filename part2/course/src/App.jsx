@@ -12,11 +12,9 @@ const Part = ({part}) => {
 }
 
 const Content = ({ parts }) => {
-  const renderParts = () => parts.map(part => <Part key={part.name} part={part} />);
-
   return (
     <div>
-      {renderParts()}
+      { parts.map(part => <Part key={part.id} part={part} />) }
     </div>
   )
 }
@@ -37,7 +35,7 @@ const App = () => {
   course.addPart(new CoursePartModel(1, 'Fundamentals of React', 10));
   course.addPart(new CoursePartModel(2, 'Using props to pass data', 7));
   course.addPart(new CoursePartModel(3, 'State of a component', 14));
-  course.addPart(new CoursePartModel(3, 'Redux', 11));
+  course.addPart(new CoursePartModel(4, 'Redux', 11));
 
   return (
     <div>

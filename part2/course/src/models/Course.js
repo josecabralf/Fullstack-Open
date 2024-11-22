@@ -4,13 +4,9 @@ export class CourseModel {
     this.parts = parts;
   }
 
-  addPart(part) {
-    this.parts.push(part);
-  }
+  addPart = (part) => this.parts.push(part);
 
-  total() {
-    return this.parts.reduce((acc, part) => acc + part.exercises, 0);
-  }
+  total = () =>  this.parts.reduce((acc, part) => acc + part.exercises, 0);
 }
   
 export class CoursePartModel {
