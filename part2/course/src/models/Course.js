@@ -1,5 +1,6 @@
 export class CourseModel {
-  constructor(name, parts = []) {
+  constructor(id, name, parts = []) {
+    this.id = id;
     this.name = name;
     this.parts = parts;
   }

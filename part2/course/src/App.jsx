@@ -37,9 +37,22 @@ const App = () => {
   course.addPart(new CoursePartModel(3, 'State of a component', 14));
   course.addPart(new CoursePartModel(4, 'Redux', 11));
 
+  const courses = [
+    new CourseModel(1, 'Half Stack application development', [
+      new CoursePartModel(1, 'Fundamentals of React', 10),
+      new CoursePartModel(2, 'Using props to pass data', 7),
+      new CoursePartModel(3, 'State of a component', 14),
+      new CoursePartModel(4, 'Redux', 11)
+    ]),
+    new CourseModel(2, 'Node.js', [
+      new CoursePartModel(1, 'Routing', 3),
+      new CoursePartModel(2, 'Middlewares', 7)
+    ])
+  ];
+
   return (
     <div>
-      <Course course={course} />
+      {courses.map((course, i) => <Course key={i} course={course} />)}
     </div>
   );
 }
