@@ -1,20 +1,26 @@
 import { useState } from 'react'
 import { PersonModel } from './models/PersonModels'
 import { AddNumber } from './components/AddNumber'
+import { Filter } from './components/Filter'
 import { Numbers } from './components/Numbers'
 import { Header } from './components/utils'
 
 
 const App = () => {
-  const [persons, setPersons] = useState([new PersonModel(1, 'Arto Hellas', '040-123456')]);
+  const [persons, setPersons] = useState([
+    new PersonModel(1, 'Arto Hellas', '040-123456'),
+    new PersonModel(2, 'Ada Lovelace', '39-44-5323523'),
+    new PersonModel(3, 'Dan Abramov', '12-43-234345'),
+    new PersonModel(4, 'Mary Poppendieck', '39-23-642312'),
+  ]);
+
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+  const [newSearchName, setNewSearchName] = useState('');
 
   const onNameChange = (event) => setNewName(event.target.value);
   const onNumberChange = (event) => setNewNumber(event.target.value);
-
-  const personExists = (persons, name, number) => 
-    persons.find(person => person.name === name && person.number === number);
+  const onSearchNameInput = (event) => setNewSearchName(event.target.value);
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -23,7 +29,8 @@ const App = () => {
     setNewName('');
     setNewNumber('');
 
-    if (personExists(persons, newName, newNumber)) {
+    const existing = persons.find(p => p.name === newName && p.number === newNumber);
+    if (existing) {
       alert(`${newName} is already added to phonebook`);
       return;
     }
@@ -35,8 +42,11 @@ const App = () => {
   return (
     <div>
       <Header text={'Phonebook'}/>
+      <Filter search={newSearchName} handleFilterInput={onSearchNameInput} />
       <AddNumber newName={newName} newNumber={newNumber} onNameChange={onNameChange} onNumberChange={onNumberChange} onSubmit={onSubmit}/>
-      <Numbers persons={persons} />
+      <Numbers persons={newSearchName.length > 0 
+        ? persons.filter(p => p.name.toLowerCase().includes(newSearchName.toLowerCase())) 
+        : persons} />
     </div>
   )
 }
