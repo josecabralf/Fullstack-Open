@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { PersonModel } from './models/PersonModels'
-import { AddNumber } from './components/AddNumber'
 import { Filter } from './components/Filter'
-import { Numbers } from './components/Numbers'
+import { Persons } from './components/Persons'
+import { PersonForm } from './components/PersonForm'
 import { Header } from './components/utils'
 
 
@@ -43,8 +43,8 @@ const App = () => {
     <div>
       <Header text={'Phonebook'}/>
       <Filter search={newSearchName} handleFilterInput={onSearchNameInput} />
-      <AddNumber newName={newName} newNumber={newNumber} onNameChange={onNameChange} onNumberChange={onNumberChange} onSubmit={onSubmit}/>
-      <Numbers persons={newSearchName.length > 0 
+      <PersonForm newName={newName} newNumber={newNumber} onNameChange={onNameChange} onNumberChange={onNumberChange} onSubmit={onSubmit}/>
+      <Persons persons={newSearchName.length > 0 
         ? persons.filter(p => p.name.toLowerCase().includes(newSearchName.toLowerCase())) 
         : persons} />
     </div>

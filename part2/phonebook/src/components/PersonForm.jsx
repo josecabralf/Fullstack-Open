@@ -7,7 +7,7 @@ const InputField = ({ label, value, onChange }) =>
 
 const Button = ({ text }) => <button type="submit">{text}</button>
 
-export const AddNumber = ({ newName, newNumber, onNameChange, onNumberChange, onSubmit }) => {
+export const PersonForm = ({ newName, newNumber, onNameChange, onNumberChange, onSubmit }) => {
   return (
     <>
       <Header text='Add a new number' />

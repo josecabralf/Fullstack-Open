@@ -1,6 +1,6 @@
 import { Header } from "./utils";
 
-const NumbersList = ({ persons }) => 
+const PersonsList = ({ persons }) => 
   <div>{
     persons.map(person => 
       <div key={person.id}>
@@ -8,13 +8,13 @@ const NumbersList = ({ persons }) =>
       </div>)}
   </div> 
 
-const NoNumbers = () => <div>No numbers to show</div>
+const NoPersons = () => <div>No numbers to show</div>
 
-export const Numbers = ({ persons }) => {
+export const Persons = ({ persons }) => {
   return (
     <>
       <Header text='Numbers' />
-      {persons.length > 0 ? <NumbersList persons={persons} /> : <NoNumbers />}
+      {persons.length > 0 ? <PersonsList persons={persons} /> : <NoPersons />}
     </>
   );
 }
