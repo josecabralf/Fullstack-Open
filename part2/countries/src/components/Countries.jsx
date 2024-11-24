@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getWeather } from '../services/weather';
+import { Weather } from './Weather';
 
 export const Button = ({ text, onClick }) => <button onClick={onClick}>{text}</button>
 
@@ -15,19 +17,26 @@ export const None = () => {
 }
 
 export const Country = ({ country }) => {
+  const [weather, setWeather] = useState();
+
+  useEffect(() => {
+    getWeather(country.capital[0], country.cioc).then(weather => setWeather(weather));
+  }, []);
+
   const languages = Object.values(country.languages) || [];
   const capitals = country.capital.join(', ') || '';
   return (
     <div>
       <h2>{country.name.common}</h2>
-      <div>capital: {capitals}</div>
-      <div>area: {country.area}</div>
+      <div><b>capital:</b> {capitals}</div>
+      <div><b>area:</b> {country.area}</div>
       <h3>Languages</h3>
       <ul>
         {languages.map(lang => <li key={lang}>{lang}</li>)}
       </ul>
       <img src={country.flags.png} alt={country.name.common} style={{ width: '200px' }} />
-      </div>
+      {weather && <Weather weather={weather} city={country.capital[0]} />}
+    </div>
   );
 }
 
@@ -45,6 +54,7 @@ export const CountriesList = ({ countries }) => {
           }
           {selected === country && <Country country={selected} />}
         </div>)}
+      
     </div>
   );
 }
