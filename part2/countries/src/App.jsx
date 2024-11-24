@@ -6,17 +6,13 @@ import { CountriesList, Country, None, TooMany } from './components/Countries'
 function App() {
   const [filter, setFilter] = useState('');
   const [countries, setCountries] = useState([]);
-  const [countriesToDisplay, setCountriesToDisplay] = useState([]);
 
   useEffect(() => {
     getAll().then(countries => setCountries(countries))
   }, []);
 
-  useEffect(() => {
-    setCountriesToDisplay(countries.filter(c => c.name.common.toLowerCase().includes(filter.toLowerCase())))
-  }, [filter, countries]);
-
   const onFilterInput = (e) => setFilter(e.target.value);
+  const countriesToDisplay = countries.filter(c => c.name.common.toLowerCase().includes(filter.toLowerCase()));
   
   return (
     <>
