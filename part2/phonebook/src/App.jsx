@@ -1,36 +1,47 @@
 import { useState, useEffect } from 'react'
 import { getAll, create, remove, update } from './services/phonebook'
 import { PersonModel } from './models/PersonModels'
+import { NotificationModel } from './models/NotificationModel'
 import { Filter } from './components/Filter'
+import { Header } from './components/utils'
+import { Notification } from './components/Notification'
 import { Persons } from './components/Persons'
 import { PersonForm } from './components/PersonForm'
-import { Header } from './components/utils'
 
 
 const App = () => {
   const [persons, setPersons] = useState([]);
+  const [newName, setNewName] = useState('');
+  const [newNumber, setNewNumber] = useState('');
+  const [newSearchName, setNewSearchName] = useState('');
+  const [notification, setNotification] = useState(null);
+
+  const onNameChange = (e) => setNewName(e.target.value);
+  const onNumberChange = (e) => setNewNumber(e.target.value);
+  const onSearchNameInput = (e) => setNewSearchName(e.target.value);
 
   const fetchPersons = () => {
-    getAll().then(resp => {
+    getAll()
+      .then(resp => {
         const persons = resp.map(p => new PersonModel(p.id, p.name, p.number));
         setPersons(persons);
+      })
+      .catch(_ => {
+        setNotification(new NotificationModel('Failed to fetch data', 'error'));
+        setTimeout(() => setNotification(null), 5000);
       });
   }
 
   useEffect(fetchPersons);
 
-  const [newName, setNewName] = useState('');
-  const onNameChange = (e) => setNewName(e.target.value);
-
-  const [newNumber, setNewNumber] = useState('');
-  const onNumberChange = (e) => setNewNumber(e.target.value);
-
-  const [newSearchName, setNewSearchName] = useState('');
-  const onSearchNameInput = (e) => setNewSearchName(e.target.value);
-
   const clearInputFields = () => {
     setNewName('');
     setNewNumber('');
+  }
+
+  const setTemporalNotification = (message, type) => {
+    setNotification(new NotificationModel(message, type));
+    setTimeout(() => setNotification(null), 3000);
   }
 
   const onSubmit = (e) => {
@@ -43,6 +54,10 @@ const App = () => {
         const newPerson = new PersonModel(resp.id, resp.name, resp.number);
         setPersons(persons.concat(newPerson));
         clearInputFields();
+        setTemporalNotification(`Added ${newPerson.name}`, 'success');
+      })
+      .catch(err => {
+        setTemporalNotification(`${newName} could not be created :(`, 'error');
       });
       
       return;
@@ -56,6 +71,10 @@ const App = () => {
         const updatedPerson = new PersonModel(resp.id, resp.name, resp.number);
         setPersons(persons.map(p => p.id === updatedPerson.id ? updatedPerson : p));
         clearInputFields();
+        setTemporalNotification(`Updated ${updatedPerson.name}`, 'success');
+      })
+      .catch(err => {
+        setTemporalNotification(`${newName} could not be updated :(`, 'error');
       });
   }
 
@@ -67,6 +86,9 @@ const App = () => {
     remove(id)
       .then(() => {
         setPersons(persons.filter(p => p.id !== id));
+      })
+      .catch(err => {
+        setTemporalNotification(`${person.name} could not be removed :(`, 'error');
       });
   }
 
@@ -77,6 +99,7 @@ const App = () => {
   return (
     <div>
       <Header text={'Phonebook'}/>
+      <Notification notification={notification} />
       <Filter search={newSearchName} handleFilterInput={onSearchNameInput} />
       <PersonForm newName={newName} newNumber={newNumber} onNameChange={onNameChange} onNumberChange={onNumberChange} onSubmit={onSubmit}/>
       <Persons persons={peopleToShow} onRemove={onRemove} />
