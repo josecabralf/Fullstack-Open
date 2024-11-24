@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { useState, useEffect } from 'react'
+import { getAll, create } from './services/phonebook'
 import { PersonModel } from './models/PersonModels'
 import { Filter } from './components/Filter'
 import { Persons } from './components/Persons'
@@ -9,13 +9,15 @@ import { Header } from './components/utils'
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  useEffect(() => {
-    axios.get('http://localhost:3001/persons')
-      .then(resp => {
-        const persons = resp.data.map(p => new PersonModel(p.id, p.name, p.number));
+
+  const fetchPersons = () => {
+    getAll().then(resp => {
+        const persons = resp.map(p => new PersonModel(p.id, p.name, p.number));
         setPersons(persons);
       });
-  });
+  }
+
+  useEffect(fetchPersons);
 
   const [newName, setNewName] = useState('');
   const onNameChange = (e) => setNewName(e.target.value);
@@ -41,8 +43,11 @@ const App = () => {
       return;
     }
 
-    const newPerson = new PersonModel(persons.length + 1, newName, newNumber);
-    setPersons(persons.concat(newPerson));
+    create({ name: newName, number: newNumber })
+      .then(resp => {
+        const newPerson = new PersonModel(resp.id, resp.name, resp.number);
+        setPersons(persons.concat(newPerson));
+      });
   }
 
   return (
