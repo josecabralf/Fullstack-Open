@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getAll, create } from './services/phonebook'
+import { getAll, create, remove } from './services/phonebook'
 import { PersonModel } from './models/PersonModels'
 import { Filter } from './components/Filter'
 import { Persons } from './components/Persons'
@@ -50,14 +50,27 @@ const App = () => {
       });
   }
 
+  const onRemove = (id) => {
+    const person = persons.find(p => p.id === id);
+    if (!window.confirm(`Delete ${person.name}?`))
+      return;
+
+    remove(id)
+      .then(() => {
+        setPersons(persons.filter(p => p.id !== id));
+      });
+  }
+
+  const peopleToShow = newSearchName.length > 0
+    ? persons.filter(p => p.name.toLowerCase().includes(newSearchName.toLowerCase()))
+    : persons;
+
   return (
     <div>
       <Header text={'Phonebook'}/>
       <Filter search={newSearchName} handleFilterInput={onSearchNameInput} />
       <PersonForm newName={newName} newNumber={newNumber} onNameChange={onNameChange} onNumberChange={onNumberChange} onSubmit={onSubmit}/>
-      <Persons persons={newSearchName.length > 0 
-        ? persons.filter(p => p.name.toLowerCase().includes(newSearchName.toLowerCase())) 
-        : persons} />
+      <Persons persons={peopleToShow} onRemove={onRemove} />
     </div>
   )
 }
