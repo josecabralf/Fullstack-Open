@@ -74,7 +74,7 @@ const App = () => {
         setTemporalNotification(`Updated ${updatedPerson.name}`, 'success');
       })
       .catch(err => {
-        setTemporalNotification(`${newName} could not be updated :(`, 'error');
+        setTemporalNotification(`${newName} could not be updated :(\nInfo could have been already deleted from server`, 'error');
       });
   }
 
@@ -88,7 +88,7 @@ const App = () => {
         setPersons(persons.filter(p => p.id !== id));
       })
       .catch(err => {
-        setTemporalNotification(`${person.name} could not be removed :(`, 'error');
+        setTemporalNotification(`${person.name} could not be removed :(\nInfo could have been already deleted from server`, 'error');
       });
   }
 
