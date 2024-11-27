@@ -12,6 +12,7 @@ npm install
 # Build frontend
 cd ..
 cd "$FRONTEND_DIR"
+npm install
 npm run build
 
 # Move the build output to the specified directory
