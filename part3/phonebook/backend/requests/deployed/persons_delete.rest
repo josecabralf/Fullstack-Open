@@ -1,0 +1,2 @@
+DELETE https://fullstack-open-cqwj.onrender.com/api/persons/1
+Content-Type: application/json
