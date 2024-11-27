@@ -1,1 +1,1 @@
-https://fullstack-open-cqwj.onrender.com/api/persons
+https://fullstack-open-cqwj.onrender.com
