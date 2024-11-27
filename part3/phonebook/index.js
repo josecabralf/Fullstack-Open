@@ -3,7 +3,7 @@ const app = express();
 
 app.use(express.json());
 
-const persons = require('./data/persons').persons;
+let persons = require('./data/persons').persons;
 
 app.get('/info', (req, res) => {
     const date = new Date();
@@ -25,6 +25,12 @@ app.get('/api/persons/:id', (req, res) => {
         return res.status(404).end();
 
     res.json(person);
+});
+
+app.delete('/api/persons/:id', (req, res) => {
+    const id = req.params.id;
+    persons = persons.filter(person => person.id !== id);
+    res.status(204).end(); // 204 No Content - even if person was not found
 });
 
 const PORT = 3001;
