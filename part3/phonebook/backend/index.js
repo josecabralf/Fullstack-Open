@@ -1,15 +1,16 @@
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
-
 // app.use(morgan('tiny'));
-morgan.token('data', (req, res) =>  req.method === 'POST' ? JSON.stringify(req.body) : '');
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'));
+// morgan.token('data', (req, res) =>  req.method === 'POST' ? JSON.stringify(req.body) : '');
+// app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'));
 
-let persons = require('./data/persons').persons;
+let persons = [].concat(require('./data/persons').persons);
 
 app.get('/info', (req, res) => {
     const date = new Date();
@@ -49,7 +50,7 @@ app.post('/api/persons', (req, res) => {
         return res.status(400).json({ error: 'name must be unique' });
 
     const person = {
-        id: Math.floor(Math.random() * 100000000),
+        id: Math.floor(Math.random() * 100000000).toString(),
         name: body.name,
         number: body.number
     };
