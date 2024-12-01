@@ -20,16 +20,18 @@ const App = () => {
   const onNumberChange = (e) => setNewNumber(e.target.value);
   const onSearchNameInput = (e) => setNewSearchName(e.target.value);
 
+  const setTemporalNotification = (message, type) => {
+    setNotification(new NotificationModel(message, type));
+    setTimeout(() => setNotification(null), 5000);
+  }
+
   const fetchPersons = () => {
     getAll()
       .then(resp => {
         const persons = resp.map(p => new PersonModel(p.id, p.name, p.number));
         setPersons(persons);
       })
-      .catch(_ => {
-        setNotification(new NotificationModel('Failed to fetch data', 'error'));
-        setTimeout(() => setNotification(null), 5000);
-      });
+      .catch(_ => setTemporalNotification('Failed to fetch data', 'error'));
   }
 
   useEffect(fetchPersons);
@@ -37,11 +39,6 @@ const App = () => {
   const clearInputFields = () => {
     setNewName('');
     setNewNumber('');
-  }
-
-  const setTemporalNotification = (message, type) => {
-    setNotification(new NotificationModel(message, type));
-    setTimeout(() => setNotification(null), 3000);
   }
 
   const onSubmit = (e) => {
@@ -56,8 +53,9 @@ const App = () => {
         clearInputFields();
         setTemporalNotification(`Added ${newPerson.name}`, 'success');
       })
-      .catch(err => {
-        setTemporalNotification(`${newName} could not be created :(`, 'error');
+      .catch(e => {
+        const message = e.response.data.error || 'Unknown error';
+        setTemporalNotification(`${newName} could not be created :(\nError: ${message}`, 'error');
       });
       
       return;
@@ -73,8 +71,9 @@ const App = () => {
         clearInputFields();
         setTemporalNotification(`Updated ${updatedPerson.name}`, 'success');
       })
-      .catch(err => {
-        setTemporalNotification(`${newName} could not be updated :(\nInfo could have been already deleted from server`, 'error');
+      .catch(e => {
+        const message = e.response.data.error || 'Unknown error';
+        setTemporalNotification(`${newName} could not be updated :(\nError: ${message}`, 'error');
       });
   }
 
@@ -88,7 +87,8 @@ const App = () => {
         setPersons(persons.filter(p => p.id !== id));
       })
       .catch(err => {
-        setTemporalNotification(`${person.name} could not be removed :(\nInfo could have been already deleted from server`, 'error');
+        const message = err.response.data.error || 'Unknown error';
+        setTemporalNotification(`${person.name} could not be removed :(\nError: ${message}`, 'error');
       });
   }
 
