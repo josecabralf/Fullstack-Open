@@ -1,5 +1,26 @@
-export const Header = ({ text }) => { return <h2>{text}</h2> }
+import PropTypes from 'prop-types';
 
-export const SubmitButton = ({ text }) => <button type="submit">{text}</button>
+export const Header = ({ text }) => { 
+  return <h2>{text}</h2>; 
+};
 
-export const Button = ({ text, onClick }) => <button onClick={onClick}>{text}</button>
+Header.propTypes = {
+  text: PropTypes.string.isRequired,
+};
+
+export const SubmitButton = ({ text }) => (
+  <button type="submit">{text}</button>
+);
+
+SubmitButton.propTypes = {
+  text: PropTypes.string.isRequired,
+};
+
+export const Button = ({ text, onClick }) => (
+  <button onClick={onClick}>{text}</button>
+);
+
+Button.propTypes = {
+  text: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+};

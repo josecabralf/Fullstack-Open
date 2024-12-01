@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Header, Button } from "./utils";
 
 const PersonsList = ({ persons, onRemove }) => 
@@ -9,6 +10,11 @@ const PersonsList = ({ persons, onRemove }) =>
       </div>)}
   </div> 
 
+PersonsList.propTypes = {
+  persons: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onRemove: PropTypes.func.isRequired,
+};
+
 const NoPersons = () => <div>No numbers to show</div>
 
 export const Persons = ({ persons, onRemove  }) => {
@@ -19,3 +25,8 @@ export const Persons = ({ persons, onRemove  }) => {
     </>
   );
 }
+
+Persons.propTypes = {
+  persons: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onRemove: PropTypes.func.isRequired,
+};

@@ -31,7 +31,7 @@ const App = () => {
         const persons = resp.map(p => new PersonModel(p.id, p.name, p.number));
         setPersons(persons);
       })
-      .catch(_ => setTemporalNotification('Failed to fetch data', 'error'));
+      .catch(() => setTemporalNotification('Failed to fetch data', 'error'));
   }
 
   useEffect(fetchPersons);
