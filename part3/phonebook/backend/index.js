@@ -1,16 +1,17 @@
+require('dotenv').config();
 const express = require('express');
-// const morgan = require('morgan');
 const cors = require('cors');
 const app = express();
+const Person = require('./models/person');
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'))
+app.use(express.static('public'));
+
+// const morgan = require('morgan');
 // app.use(morgan('tiny'));
 // morgan.token('data', (req, res) =>  req.method === 'POST' ? JSON.stringify(req.body) : '');
 // app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'));
-
-let persons = [].concat(require('./data/persons').persons);
 
 app.get('/info', (req, res) => {
     const date = new Date();
@@ -21,17 +22,11 @@ app.get('/info', (req, res) => {
 });
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons);
+    Person.find({}).then(persons => res.json(persons));
 });
 
 app.get('/api/persons/:id', (req, res) => {
-    const id = req.params.id;
-    const person = persons.find(person => person.id === id);
-
-    if (!person)
-        return res.status(404).json({ error: `person ${id} was not found` }).end();
-
-    res.json(person);
+    Person.findById(req.params.id).then(person => res.json(person));
 });
 
 app.delete('/api/persons/:id', (req, res) => {
