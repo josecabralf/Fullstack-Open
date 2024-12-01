@@ -16,10 +16,12 @@ app.use(express.json());
 
 app.get('/info', (req, res) => {
     const date = new Date();
-    res.send(
-        `<p>Phonebook has info for ${persons.length} people</p>
-        <p>${date}</p>`
-    );
+    Person.countDocuments({})
+        .then(count => res.send(
+            `<p>Phonebook has info for ${count} people</p>
+            <p>${date}</p>`
+        ))
+        .catch(e => next(e));
 });
 
 app.get('/api/persons', (req, res) => {
