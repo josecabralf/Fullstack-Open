@@ -1,17 +1,16 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 
 const app = express();
 
 const Person = require('./models/person');
 
+app.use(cors());
 app.use(express.static('public'));
 app.use(express.json());
-app.use(morgan('tiny'));
-app.use(cors());
-
+// app.use(morgan('tiny'));
 // morgan.token('data', (req, res) =>  req.method === 'POST' ? JSON.stringify(req.body) : '');
 // app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'));
 
@@ -51,9 +50,6 @@ app.post('/api/persons', (req, res) => {
     if (!body.name || !body.number)
         return res.status(400).json({ error: 'name or number missing' });
 
-    // if (persons.find(person => person.name === body.name))
-    //     return res.status(400).json({ error: 'name must be unique' });
-
     const person = new Person({
         name: body.name,
         number: body.number,
@@ -61,6 +57,18 @@ app.post('/api/persons', (req, res) => {
 
     person.save()
         .then(result => res.json(result))
+        .catch(e => next(e));
+});
+
+app.put('/api/persons/:id', (req, res) => {
+    const body = req.body;
+    const person = {
+        name: body.name,
+        number: body.number
+    };
+
+    Person.findByIdAndUpdate(req.params.id, person, { new: true })
+        .then(updatedPerson => res.json(updatedPerson))
         .catch(e => next(e));
 });
 
