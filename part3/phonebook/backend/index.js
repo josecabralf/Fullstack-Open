@@ -24,7 +24,9 @@ app.get('/info', (req, res) => {
 });
 
 app.get('/api/persons', (req, res) => {
-    Person.find({}).then(persons => res.json(persons));
+    Person.find({})
+        .then(persons => res.json(persons))
+        .catch(e => next(e));
 });
 
 app.get('/api/persons/:id', (req, res) => {
@@ -39,12 +41,13 @@ app.get('/api/persons/:id', (req, res) => {
 });
 
 app.delete('/api/persons/:id', (req, res) => {
-    Person.findByIdAndDelete(req.params.id).then(result => res.status(204).end());
+    Person.findByIdAndDelete(req.params.id)
+        .then(result => res.status(204).end())
+        .catch(e => next(e));
 });
 
 app.post('/api/persons', (req, res) => {
     const body = req.body;
-
     if (!body.name || !body.number)
         return res.status(400).json({ error: 'name or number missing' });
 
@@ -56,7 +59,9 @@ app.post('/api/persons', (req, res) => {
         number: body.number,
     });
 
-    person.save().then(result => res.json(result));
+    person.save()
+        .then(result => res.json(result))
+        .catch(e => next(e));
 });
 
 const unknownEndpoint = (request, response) => response.status(404).send({ error: 'unknown endpoint' });
