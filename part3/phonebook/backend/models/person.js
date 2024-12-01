@@ -18,7 +18,23 @@ const personSchema = new mongoose.Schema({
       unique: true,
       minlength: 3
     },
-    number: String,
+    number: {
+      type: String,
+      required: true,
+      minlength: 9, // 8 digits and 1 '-'
+      validate: {
+        validator: (v) => {
+          const parts = v.split('-');
+
+          if (parts.length !== 2) return false; // two sections separated by '-'
+          if (isNaN(parts[0]) || isNaN(parts[1])) return false; // both parts are numbers
+          if (parts[0].length < 2 || parts[0].length > 3) return false; // first part has 2 or 3 digits
+          if (parts[0].length + parts[1].length < 8) return false; // total length is 8 or more
+
+          return true;
+        }
+      }
+    },
 });
 
 personSchema.set('toJSON', {
