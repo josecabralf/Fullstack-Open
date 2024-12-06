@@ -25,3 +25,11 @@ describe('favourite blog', () => {
 
   test('of a bigger list is calculated right', () => assert.deepStrictEqual(listHelper.favouriteBlog(blogs), blogs[2]));
 });
+
+describe('most blogs', () => {
+  test('of empty list is null', () => assert.strictEqual(listHelper.mostBlogs([]), null));
+
+  test('of one value is the value itself', () => assert.deepStrictEqual(listHelper.mostBlogs([blogs[0]]), { author: blogs[0].author, blogs: 1 }));
+
+  test('of a bigger list is calculated right', () => assert.deepStrictEqual(listHelper.mostBlogs(blogs), { author: 'Robert C. Martin', blogs: 3 }));
+});

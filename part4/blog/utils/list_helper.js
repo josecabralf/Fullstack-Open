@@ -9,9 +9,23 @@ const favouriteBlog = (blogs) => {
     return blogs.reduce((max, blog) => (blog.likes > max.likes ? blog : max), blogs[0])
 };
 
+const mostBlogs = (blogs) => {
+    if (blogs.length === 0) 
+        return null;
+
+    const authors = {};
+    blogs.forEach(b => {
+        if (authors[b.author]) authors[b.author] += 1;
+        else authors[b.author] = 1;
+    });
+
+    const author = Object.keys(authors).reduce((max, author) => (authors[author] > authors[max] ? author : max), Object.keys(authors)[0]);
+    return { author, blogs: authors[author] };
+}
 
 module.exports = {
     dummy,
     totalLikes,
-    favouriteBlog
+    favouriteBlog,
+    mostBlogs
 }
