@@ -17,3 +17,11 @@ describe('total likes', () => {
 
   test('of a bigger list is calculated right', () => assert.strictEqual(listHelper.totalLikes(blogs), 36));
 })
+
+describe('favourite blog', () => {
+  test('of empty list is null', () => assert.strictEqual(listHelper.favouriteBlog([]), null));
+
+  test('of one value is the value itself', () => assert.deepStrictEqual(listHelper.favouriteBlog([blogs[0]]), blogs[0]));
+
+  test('of a bigger list is calculated right', () => assert.deepStrictEqual(listHelper.favouriteBlog(blogs), blogs[2]));
+});
