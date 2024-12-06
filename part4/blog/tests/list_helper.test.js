@@ -33,3 +33,11 @@ describe('most blogs', () => {
 
   test('of a bigger list is calculated right', () => assert.deepStrictEqual(listHelper.mostBlogs(blogs), { author: 'Robert C. Martin', blogs: 3 }));
 });
+
+describe('most likes', () => {
+  test('of empty list is null', () => assert.strictEqual(listHelper.mostLikes([]), null));
+
+  test('of one value is the value itself', () => assert.deepStrictEqual(listHelper.mostLikes([blogs[0]]), { author: blogs[0].author, likes: blogs[0].likes }));
+
+  test('of a bigger list is calculated right', () => assert.deepStrictEqual(listHelper.mostLikes(blogs), { author: 'Edsger W. Dijkstra', likes: 17 }));
+});

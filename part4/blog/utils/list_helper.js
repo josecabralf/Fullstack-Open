@@ -21,11 +21,26 @@ const mostBlogs = (blogs) => {
 
     const author = Object.keys(authors).reduce((max, author) => (authors[author] > authors[max] ? author : max), Object.keys(authors)[0]);
     return { author, blogs: authors[author] };
-}
+};
+
+const mostLikes = (blogs) => {
+    if (blogs.length === 0) 
+        return null;
+
+    const authors = {};
+    blogs.forEach(b => {
+        if (authors[b.author]) authors[b.author] += b.likes;
+        else authors[b.author] = b.likes;
+    });
+
+    const author = Object.keys(authors).reduce((max, author) => (authors[author] > authors[max] ? author : max), Object.keys(authors)[0]);
+    return { author, likes: authors[author] };
+};
 
 module.exports = {
     dummy,
     totalLikes,
     favouriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 }
