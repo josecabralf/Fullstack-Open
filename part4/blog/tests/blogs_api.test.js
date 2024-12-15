@@ -38,20 +38,26 @@ beforeEach(async () => {
 
 describe('blogs', () => {
   test('returns correct amount of posts', async () => {
-    const response = await api.get('/api/blogs');
-    assert.strictEqual(response.statusCode, 200);
+    const response = await api.get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+
     assert.strictEqual(response.body.length, initialBlogs.length);
   });
 
   test('has id property', async () => {
-    const response = await api.get('/api/blogs');
-    assert.strictEqual(response.statusCode, 200);
+    const response = await api.get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+      
     assert(response.body[0].id);
   });
 
   test('creates a new blog post', async () => {
-    const response = await api.post('/api/blogs').send(newBlog);
-    assert.strictEqual(response.statusCode, 201);
+    const response = await api.post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
 
     const blogsResponse = (await api.get('/api/blogs')).body; // Check if the new blog post was added
     assert.strictEqual(blogsResponse.length, initialBlogs.length + 1);
