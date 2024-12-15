@@ -35,6 +35,12 @@ describe('blogs', () => {
     assert.strictEqual(response.statusCode, 200);
     assert.strictEqual(response.body.length, initialBlogs.length);
   });
+
+  test('has id property', async () => {
+    const response = await api.get('/api/blogs');
+    assert.strictEqual(response.statusCode, 200);
+    assert(response.body[0].id);
+  });
 });
 
 after(async () => {
