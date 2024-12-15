@@ -22,6 +22,13 @@ const initialBlogs = [
   }
 ];
 
+const newBlog = {
+  title: "React Hooks",
+  author: "Jane Popper",
+  url: "http://www.jccodesblog.com",
+  likes: 9
+};
+
 beforeEach(async () => {
   await Blog.deleteMany({});
 
@@ -40,6 +47,17 @@ describe('blogs', () => {
     const response = await api.get('/api/blogs');
     assert.strictEqual(response.statusCode, 200);
     assert(response.body[0].id);
+  });
+
+  test('creates a new blog post', async () => {
+    const response = await api.post('/api/blogs').send(newBlog);
+    assert.strictEqual(response.statusCode, 201);
+
+    const blogsResponse = (await api.get('/api/blogs')).body; // Check if the new blog post was added
+    assert.strictEqual(blogsResponse.length, initialBlogs.length + 1);
+
+    const { id, ...addedBlog } = blogsResponse[2]; // Check if the new blog post has the correct values
+    assert.deepStrictEqual(addedBlog, newBlog);
   });
 });
 
