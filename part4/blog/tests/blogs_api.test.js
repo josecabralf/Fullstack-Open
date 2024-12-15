@@ -28,7 +28,7 @@ describe('blogs', () => {
 
   test('creates a new blog post', async () => {
     const response = await api.post('/api/blogs')
-      .send(helper.newBlog)
+      .send(helper.newFullValidBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/);
 
@@ -36,7 +36,17 @@ describe('blogs', () => {
     assert.strictEqual(blogsInDb.length, helper.initialBlogs.length + 1);
 
     const { id, ...addedBlog } = blogsInDb[2]; // Check if the new blog post has the correct values
-    assert.deepStrictEqual(addedBlog, helper.newBlog);
+    assert.deepStrictEqual(addedBlog, helper.newFullValidBlog);
+  });
+
+  test('likes property defaults to 0', async () => {
+    const response = await api.post('/api/blogs')
+      .send(helper.newBlogWithoutLikes)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+
+    const { likes } = response.body;
+    assert.strictEqual(likes, 0);
   });
 });
 
