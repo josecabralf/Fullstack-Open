@@ -30,7 +30,7 @@ describe('when there are some blogs saved initially', () => {
 
   describe('creating a new blog post', () => {
     test('creates a new blog post', async () => {
-      const response = await api.post('/api/blogs')
+      await api.post('/api/blogs')
         .send(helper.newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/);
@@ -85,6 +85,22 @@ describe('when there are some blogs saved initially', () => {
 
       const ids = blogsAfterDeletion.map(b => b.id);
       assert(!ids.includes(id));
+    });
+  });
+
+  describe('updating a blog post', () => {
+    test('updates a blog post', async () => {
+      const blogsInDb = await helper.blogsInDb();
+      const { id } = blogsInDb[0];
+
+      const updatedBlog = { ...blogsInDb[0], likes: 10 };
+      await api.put(`/api/blogs/${id}`)
+        .send(updatedBlog)
+        .expect(200)
+        .expect('Content-Type', /application\/json/);
+
+      const blogsAfterUpdate = await helper.blogsInDb();
+      assert.deepStrictEqual(blogsAfterUpdate[0], updatedBlog);
     });
   });
 });
