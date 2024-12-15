@@ -15,17 +15,11 @@ const initialBlogs = [
   }
 ];
   
-const newFullValidBlog = {
+const newBlog = {
   title: "React Hooks",
   author: "Jane Popper",
   url: "http://www.jccodesblog.com",
   likes: 9
-};
-
-const newBlogWithoutLikes = {
-  title: "React Hooks",
-  author: "Jane Popper",
-  url: "http://www.jccodesblog.com"
 };
 
 const resetDb = async () => {
@@ -42,8 +36,7 @@ const blogsInDb = async () => {
 
 module.exports = {
   initialBlogs, 
-  newFullValidBlog, 
-  newBlogWithoutLikes,
+  newBlog, 
   resetDb, 
   blogsInDb
 }
