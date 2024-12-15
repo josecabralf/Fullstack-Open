@@ -71,6 +71,22 @@ describe('when there are some blogs saved initially', () => {
         .expect({ error: 'Url is required' });
     });
   });
+
+  describe('deleting a blog post', () => {
+    test('deletes a blog post', async () => {
+      const blogsInDb = await helper.blogsInDb();
+      const { id } = blogsInDb[0];
+
+      await api.delete(`/api/blogs/${id}`)
+        .expect(204);
+
+      const blogsAfterDeletion = await helper.blogsInDb();
+      assert.strictEqual(blogsAfterDeletion.length, helper.initialBlogs.length - 1);
+
+      const ids = blogsAfterDeletion.map(b => b.id);
+      assert(!ids.includes(id));
+    });
+  });
 });
 
 after(async () => {
