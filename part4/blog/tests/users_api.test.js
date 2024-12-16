@@ -3,7 +3,7 @@ const assert = require('node:assert');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const supertest = require('supertest');
-const helper = require('./utils/users_test_helper');
+const helper = require('./utils/test_helper');
 const app = require('../app');
 
 const api = supertest(app);
@@ -26,6 +26,19 @@ describe('when there is initially one user in db', () => {
         .expect('Content-Type', /application\/json/);
 
       assert(response.body[0].id);
+    });
+
+    test('has blogs property', async () => {
+      const response = await api.get('/api/users')
+        .expect(200)
+        .expect('Content-Type', /application\/json/);
+
+      assert(response.body[0].blogs);
+      assert.strictEqual(response.body[0].blogs.length, helper.initialBlogs.length);
+      assert(response.body[0].blogs.every(b => b.id));
+
+      const blog = helper.initialBlogs[0];
+      assert(response.body[0].blogs.some(b => b.title === blog.title && b.author === blog.author && b.url === blog.url));
     });
   });
 
