@@ -43,6 +43,51 @@ describe('when there is initially one user in db', () => {
       const usernames = usersAtEnd.map(u => u.username);
       assert(usernames.includes(helper.newUser.username));
     });
+
+    describe('invalid user', () => {
+      test('returns 400 if username is missing', () => {
+        const userWithoutUsername = { ...helper.newUser, username: undefined };
+        return api
+          .post('/api/users')
+          .send(userWithoutUsername)
+          .expect(400);
+      });
+
+      test('returns 400 if username is too short', () => {
+        const userWithShortUsername = { ...helper.newUser, username: 'ab' };
+        return api
+          .post('/api/users')
+          .send(userWithShortUsername)
+          .expect(400);
+      });
+
+      test('returns 400 if username is not unique', () => {
+        const userWithDuplicateUsername = { ...helper.newUser, username: helper.initialUsers[0].username };
+        return api
+          .post('/api/users')
+          .send(userWithDuplicateUsername)
+          .expect(400);
+      });
+    });
+
+    describe('invalid password', () => {
+      test('returns 400 if password is missing', () => {
+        const userWithoutPassword = { ...helper.newUser, password: undefined };
+        return api
+          .post('/api/users')
+          .send(userWithoutPassword)
+          .expect(400);
+      });
+
+
+      test('returns 400 if password is too short', () => {
+        const userWithShortPassword = { ...helper.newUser, password: 'ab' };
+        return api
+          .post('/api/users')
+          .send(userWithShortPassword)
+          .expect(400);
+      });
+    });
   });
 });
 
