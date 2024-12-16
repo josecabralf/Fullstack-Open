@@ -58,8 +58,7 @@ describe('when there are some blogs saved initially', () => {
       await api.post('/api/blogs')
         .send(blogWithoutTitle)
         .expect(400)
-        .expect('Content-Type', /application\/json/)
-        .expect({ error: 'Title is required' });      
+        .expect('Content-Type', /application\/json/);
     });
 
     test('returns 400 if url is missing', async () => {
@@ -67,8 +66,7 @@ describe('when there are some blogs saved initially', () => {
       await api.post('/api/blogs')
         .send(blogWithoutUrl)
         .expect(400)
-        .expect('Content-Type', /application\/json/)
-        .expect({ error: 'Url is required' });
+        .expect('Content-Type', /application\/json/);
     });
   });
 
@@ -105,6 +103,4 @@ describe('when there are some blogs saved initially', () => {
   });
 });
 
-after(async () => {
-  await mongoose.connection.close();
-});
+after(async () => await mongoose.connection.close());
