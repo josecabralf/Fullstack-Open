@@ -15,17 +15,8 @@ usersRouter.post('/', async (request, response, next) => {
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
 
-    try {
-        const savedUser = await new User({ username, name, passwordHash }).save();
-        response.status(201).json(savedUser);
-    }
-    catch (error) {
-        if (error.name === 'ValidationError')
-            return response.status(400).json({ error: error.message });
-        else if (error.code === 11000)
-            return response.status(400).json({ error: 'username must be unique' });
-        next(error);
-    }
+    const savedUser = await new User({ username, name, passwordHash }).save();
+    response.status(201).json(savedUser);
 })
 
 module.exports = usersRouter

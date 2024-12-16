@@ -1,5 +1,6 @@
 const { test, after, beforeEach, describe } = require('node:test');
 const assert = require('node:assert');
+const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const helper = require('./utils/users_test_helper');
@@ -30,18 +31,18 @@ describe('when there is initially one user in db', () => {
 
   describe('creating a new user', () => {
     test('creation succeeds with a fresh username', async () => {
-      const usersAtStart = await helper.usersInDb();
       await api
         .post('/api/users')
         .send(helper.newUser)
         .expect(201)
         .expect('Content-Type', /application\/json/)
 
-      const usersAtEnd = await helper.usersInDb();
-      assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1);
+      const usersInDb = await helper.usersInDb();
+      assert.strictEqual(usersInDb.length, helper.initialUsers.length + 1);
 
-      const usernames = usersAtEnd.map(u => u.username);
-      assert(usernames.includes(helper.newUser.username));
+      const { id, ...addedUser } = usersInDb[usersInDb.length - 1]; // Check if the new blog post has the correct values
+      const expectedUser = { username: helper.newUser.username, name: helper.newUser.name, blogs: [] };
+      assert.deepStrictEqual(addedUser, expectedUser);
     });
 
     describe('invalid user', () => {

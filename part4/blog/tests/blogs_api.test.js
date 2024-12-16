@@ -38,7 +38,7 @@ describe('when there are some blogs saved initially', () => {
       const blogsInDb = await helper.blogsInDb();
       assert.strictEqual(blogsInDb.length, helper.initialBlogs.length + 1);
 
-      const { id, ...addedBlog } = blogsInDb[2]; // Check if the new blog post has the correct values
+      const { id, ...addedBlog } = blogsInDb[blogsInDb.length - 1]; // Check if the new blog post has the correct values
       assert.deepStrictEqual(addedBlog, helper.newBlog);
     });
 
